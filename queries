@@ -1,0 +1,98 @@
+CREATE DATABASE moonpark;
+
+
+CREATE TABLE mechanism (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    name varchar(32),
+    cost decimal(6,2)
+);
+
+CREATE TABLE market (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    name varchar(32),
+    tax tinyint(100)
+);
+
+CREATE TABLE tovar (
+    id_market int,
+    name varchar(32),
+    cost decimal(6,2),
+
+    FOREIGN KEY (id_market)  REFERENCES market (id)
+);
+
+CREATE TABLE profit (
+    id_market int NULL,
+    id_mechanism int NULL,
+    money decimal(9,2),  
+
+    FOREIGN KEY (id_market)  REFERENCES market (id),
+    FOREIGN KEY (id_mechanism)  REFERENCES mechanism (id)
+);
+
+
+INSERT INTO market(name, tax) 
+    VALUES ('Пятёрочка', 25); 
+INSERT INTO market(name, tax) 
+    VALUES ('Голубиный дом', 5);
+INSERT INTO market(name, tax) 
+    VALUES ('Ларёк с сахарной ватой', 15);
+INSERT INTO market(name, tax) 
+    VALUES ('Ларёк игрушек', 15);
+
+INSERT INTO mechanism(name, cost) 
+    VALUES ('Машинки', 5); 
+INSERT INTO mechanism(name, cost) 
+    VALUES ('Карусель', 5); 
+INSERT INTO mechanism(name, cost) 
+    VALUES ('Тир', 7); 
+INSERT INTO mechanism(name, cost) 
+    VALUES ('Гоночки', 10);
+
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (1, 'Сметана', 3);
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (1, 'Чипсы 300', 7);
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (1, 'Газировка 0.5л',5);
+
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (2, 'Голубь голубой', 15);
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (2, 'Голубь белый', 30);
+
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (3, 'Газировка 0.5л',4);
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (3, 'Сахарная вата',5);
+
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (4, 'Игрушка Lego',35);
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (4, 'Игрушка Disney',25);
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (4, 'Игрушка DC',25);
+INSERT INTO tovar(id_market, name, cost) 
+    VALUES (4, 'Игрушка Marvel',25);
+
+INSERT INTO profit(id_market, money) 
+    VALUES (1, 225);
+INSERT INTO profit(id_market, money) 
+    VALUES (2, 125);
+INSERT INTO profit(id_mechanism, money) 
+    VALUES (1, 225);
+INSERT INTO profit(id_mechanism, money) 
+    VALUES (2, 125);
+
+
+select * from profit;
+select * from profit where money > 200;
+select sum(money) from profit;
+select * from market join tovar on (market.id = tovar.id_market);
+
+
+update profit set money = money + 200 where money < 200;
+update profit set money = 2000;
+update mechanism set cost = 7 where name = 'Машинки';
+update tovar set name = 'Голубь обычный' where name = 'Голубь голубой';
+
